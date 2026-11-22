@@ -1,0 +1,36 @@
+% NAVAGATI 2026 extended abstract: working draft.
+% This single-column format is provisional; use the conference template when released.
+% Keep the review version anonymous: do not add author names or affiliations.
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.6em}
+
+\begin{document}
+\noindent\begin{minipage}{\textwidth}
+\centering\Large\bfseries
+Swarm-SAR: A Layered Framework for Multi-UAV Search and Rescue Using Coverage Planning, Thermal Detection and Safe Navigation
+\end{minipage}
+\par\vspace{0.5em}
+
+Searching a large area for a missing person requires systematic observation of the terrain and reliable recognition of a target, while the search vehicles must navigate safely around obstacles. A team of unmanned aerial vehicles (UAVs) can search different parts of the area in parallel and use onboard sensing to help detect people and guide rescue efforts.
+
+Swarm-SAR proposes a three-layer framework for this task. A coverage planner assigns search regions and generates waypoint sequences; a thermal detection model identifies people in aerial images; and a navigation layer guides each UAV between waypoints while responding to moving obstacles. The proposed interfaces connect the waypoint sequences with vehicle navigation and thermal observations. Each layer is assessed under its respective simulation or data conditions.
+
+The search area is mapped to a grid of free and obstacle cells, with cell size informed by the camera footprint and flight altitude. Four planners---Gate-Splice STC (GS-STC), Flexible Gate-Splice STC (FGS-STC), Rectangle Decomposition Serpentine (RDS), and RDS with the Guarded Walk (RDS-GW)---were developed to achieve complete grid coverage while reducing repeated visits and turns. In a ten-map grid study, all four coverage planners produced valid paths that visited every free cell for both one and four UAVs. In the four-UAV cases, RDS-GW recorded the lowest mean repeated visits (14.4) and estimated makespan (825 s) among the four planners. This makespan is derived from the grid-path and turn model, rather than measured flight time.
+
+Thermal person detection is studied using aerial imagery from the Partially Occluded Person (POP) dataset. A subset of images captured at approximately 40--60 m is used to train and evaluate a YOLO11m detector that identifies people in full frames. Training, validation and test scenes are kept separate to assess performance on imagery from unseen scenes. For thermal detection, the YOLO11m model achieved precision 0.688, recall 0.554 and mean average precision at an intersection-over-union threshold of 0.5 (mAP@0.5) of 0.603 on held-out test scenes. Its validation mAP@0.5 was 0.831, highlighting a difference in performance between the validation and test scenes.
+
+A hierarchical navigation controller is studied for reaching waypoints while maintaining separation from moving obstacles. A proximal policy optimization (PPO) policy generates goal-directed commands, an interacting multiple model (IMM) estimator predicts obstacle motion, and an adaptive control barrier function (ACBF) filter adjusts the commands when needed for safety. The controller is evaluated using a Crazyflie quadrotor model in PyBullet against moving-obstacle scenarios. In the navigation evaluation, the selected PPO checkpoint reached 59 of 60 additional goals. In a simulated figure-eight moving-obstacle scenario, the minimum separation was 0.464 m with PPO alone and 0.770 m with PPO and the safety filter; both reached the goal. These observations describe the individual component evaluations under their respective conditions.
+
+The reported results reflect the maps, datasets and simulation conditions used for each component. The thermal imaging and grid settings require alignment, and the navigation controller must be evaluated at the scale of the intended search mission. We plan to integrate the coverage planner, thermal detector and navigation controller in simulation, linking waypoint execution and observations to the searched-area map. The combined system can then be assessed in terms of area imaged, detection performance, vehicle separation and mission time, followed by further validation towards physical deployment.
+
+% A proposed framework diagram and references may be added as the text develops,
+% subject to the official template and the two-page limit.
+\end{document}
